@@ -30,4 +30,8 @@
 
 
 /* Add any other declarations you may need here... */
-
+#include "linkedList.h"
+#include "states.h"
+#include "myFunctions.h"
+//#include "comparisionFunctions.h"
+//#include "processICMP.h"

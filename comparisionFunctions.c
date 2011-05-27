@@ -1,3 +1,6 @@
+#include "linkedList.h"
+#include "states.h"
+
 int icmp_stateInList(void* data, Node node) {
 	struct icmp_state * associationInList = (struct icmp_state*) node->data;
 	struct icmp_state * associationNew = (struct icmp_state*) data;
@@ -8,3 +11,5 @@ int icmp_stateInList(void* data, Node node) {
 	else
 		return 0;
 }
+
+
