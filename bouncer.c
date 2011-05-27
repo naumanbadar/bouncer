@@ -3,11 +3,9 @@
 */
 
 #include "bouncer.h"
-#include "process_pkt.c"
 
 
-void process_pkt(u_char *args, const struct pcap_pkthdr *header,
-	    const u_char *packet);
+void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *packet);
 
 int main(int argc, char *argv[])
 {
