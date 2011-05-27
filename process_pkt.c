@@ -17,8 +17,8 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		icmpStateList = newList();
 	}
 
-	const struct ip *ip_header; /* The IP header */
-	const struct icmp *icmp_header;
+	struct ip *ip_header; /* The IP header */
+	struct icmp *icmp_header;
 
 	u_int size_ip;
 

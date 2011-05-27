@@ -11,4 +11,12 @@ struct icmp_state
 };
 
 
+extern char * interface;
+extern char * listenIP;
+extern char * listenPort;
+extern char * serverIP;
+extern char * serverPort;
+
+
+
 #endif
