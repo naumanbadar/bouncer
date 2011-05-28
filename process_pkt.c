@@ -43,8 +43,8 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		icmp_header = (struct icmp*) (packet + SIZE_ETHERNET + size_ip);
 
 		calculatedCheckSum = checksum((u_short*)icmp_header,ip_header->ip_len-size_ip);
-		if(calculatedCheckSum==0){
-				printf("GOOD ICMP Packet\n");
+		if(calculatedCheckSum!=0){
+				printf("BAD ICMP Packet\n");
 				return;
 			}
 
