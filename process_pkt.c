@@ -44,7 +44,8 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 
 		calculatedCheckSum = checksum((unsigned short*)icmp_header,ip_header->ip_len-size_ip);
 		if(calculatedCheckSum!=0){
-				printf("BAD ICMP Packet\n");
+				printf("%u",icmp_header->icmp_cksum);
+				printf("BAD ICMP Packet with seq no %d\n",icmp_header->icmp_hun.ih_idseq.icd_seq);
 				return;
 			}
 
