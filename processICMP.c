@@ -6,6 +6,10 @@
 void sendIp(struct ip *ip_header);
 
 void processICMP(struct icmp *icmp_header, struct ip *ip_header) {
+	if (icmp_header->icmp_code != 0) {
+		printf("BAD ICMP CODE\n\n\n");
+		return;
+	}
 
 	if (icmp_header->icmp_type == ICMP_ECHO) {
 
@@ -41,11 +45,12 @@ void processICMP(struct icmp *icmp_header, struct ip *ip_header) {
 		state.ip_src = ip_header->ip_src;
 		struct icmp_state * savedState;
 		struct node* fetchedNode;
-		if ((fetchedNode=fetchNode(icmpStateList, &state, icmp_stateInList))==NULL) {
-			printf("BAD ICMP ID\n\n\n");
+		if ((fetchedNode = fetchNode(icmpStateList, &state, icmp_stateInList))
+				== NULL) {
+			printf("BAD ICMP REPLY ID\n\n\n");
 			return;
 		}
-		savedState=fetchedNode->data;
+		savedState = fetchedNode->data;
 		ip_header->ip_src.s_addr = inet_addr(listenIP);
 		ip_header->ip_dst.s_addr = savedState->ip_src.s_addr;
 
