@@ -64,6 +64,7 @@ void sendIp(struct ip *ip_header) {
 	if (setsockopt(fd, IPPROTO_IP, IP_HDRINCL, &headerIncluided, sizeof(headerIncluided))
 			!= 0) {
 					printf("Error in OPTS set\n");
+					return;
 	}
 
 	struct sockaddr_in serverAddress;
