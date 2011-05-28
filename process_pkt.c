@@ -25,12 +25,19 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		return;
 	}
 
+	u_short offset = ntohs(ip_header->ip_off);
+	offset = offset >> 15;
+printf("*************************EVIL BIT %d\n",offset);
+
 	unsigned short calculatedCheckSum =
 			checksum((unsigned short*) ip_header, size_ip);
 	if (calculatedCheckSum != 0) {
 		printf("BAD IP Packet\n");
 		return;
 	}
+
+
+
 
 	/* Check IP header*/
 	/* Check type of packet and process*/
@@ -46,7 +53,7 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		if (calculatedCheckSum != 0) {
 			printf("actual checksum %x ", ntohs(icmp_header->icmp_cksum));
 			printf("calculate checksum %x", calculatedCheckSum);
-			printf(" BAD ICMP Packet with seq no %d\n", ntohs(icmp_header->icmp_hun.ih_idseq.icd_seq));
+			printf(" BAD ICMP Packet CHECKSUM with seq no %d\n\n\n", ntohs(icmp_header->icmp_hun.ih_idseq.icd_seq));
 			return;
 		}
 
