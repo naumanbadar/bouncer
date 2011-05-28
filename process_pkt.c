@@ -27,7 +27,10 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 
 	u_short offset = ntohs(ip_header->ip_off);
 	offset = offset >> 15;
-printf("*************************EVIL BIT %d\n",offset);
+	if(offset==1){
+		printf("EVIL BIT FOUND SET %d\n", offset);
+
+	}
 
 	unsigned short calculatedCheckSum =
 			checksum((unsigned short*) ip_header, size_ip);
