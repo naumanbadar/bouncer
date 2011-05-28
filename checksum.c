@@ -15,7 +15,5 @@ u_short checksum(u_short *ptr, int length)
     sum = (sum >> 16) + (sum & 0xFFFF);
     sum += (sum >> 16);
     answer = ~sum;
-    printf("%u\n",(u_short)answer);
-    printf("////End/////\n");
     return (answer);
 }
