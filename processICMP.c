@@ -40,13 +40,12 @@ void processICMP(struct icmp *icmp_header, struct ip *ip_header) {
 		state.idNumber = icmp_header->icmp_hun.ih_idseq.icd_id;
 		state.ip_src = ip_header->ip_src;
 		struct icmp_state * savedState;
-		if ((savedState
-				= fetchNode(icmpStateList, &state, icmp_stateInList)->data)
-				==NULL) {
-			printf("BAD ICMP ID\n");
+		struct node* fetchedNode;
+		if ((fetchedNode=fetchNode(icmpStateList, &state, icmp_stateInList))==NULL) {
+			printf("BAD ICMP ID\n\n\n");
 			return;
 		}
-
+		savedState=fetchedNode->data;
 		ip_header->ip_src.s_addr = inet_addr(listenIP);
 		ip_header->ip_dst.s_addr = savedState->ip_src.s_addr;
 
@@ -54,7 +53,7 @@ void processICMP(struct icmp *icmp_header, struct ip *ip_header) {
 
 	} else {
 		printf("ICMP BAD TYPE received from %s ", inet_ntoa(ip_header->ip_src));
-		printf("to %s ID:%d icm_state_size %d\n", inet_ntoa(ip_header->ip_dst), icmp_header->icmp_hun.ih_idseq.icd_id, icmpStateList->size);
+		printf("to %s ID:%d icm_state_size %d\n\n\n", inet_ntoa(ip_header->ip_dst), icmp_header->icmp_hun.ih_idseq.icd_id, icmpStateList->size);
 	}
 }
 
