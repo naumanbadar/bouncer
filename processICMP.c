@@ -52,7 +52,10 @@ void processICMP(struct icmp *icmp_header, struct ip *ip_header) {
 
 	}
 
-	if(icmp_header->icmp_type == ICMP_ECHOREPLY){
+	if (icmp_header->icmp_type == ICMP_ECHOREPLY) {
+
+		printf("ECHOREPLY received from %s ", inet_ntoa(ip_header->ip_src));
+		printf("to %s ID:%d icm_state_size %d\n", inet_ntoa(ip_header->ip_dst), icmp_header->icmp_hun.ih_idseq.icd_id, icmpStateList->size);
 
 	}
 }
