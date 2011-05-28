@@ -45,7 +45,7 @@ void processICMP(struct icmp *icmp_header, struct ip *ip_header) {
 		if ((savedState
 				= fetchNode(icmpStateList, &state, icmp_stateInList)->data)
 				==NULL) {
-			printf("Saved State Not Found\n");
+			printf("BAD ICMP ID\n");
 			return;
 		}
 

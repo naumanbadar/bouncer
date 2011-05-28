@@ -4,11 +4,7 @@
 #include "states.h"
 #include "myFunctions.h"
 
-
-
 struct linkedList * icmpStateList;
-
-
 
 //int icmp_stateInList(void* data, Node node);
 
@@ -29,8 +25,9 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		return;
 	}
 
-	unsigned short calculatedCheckSum = checksum((unsigned short*)ip_header,size_ip);
-	if(calculatedCheckSum!=0){
+	unsigned short calculatedCheckSum =
+			checksum((unsigned short*) ip_header, size_ip);
+	if (calculatedCheckSum != 0) {
 		printf("BAD IP Packet\n");
 		return;
 	}
@@ -39,20 +36,22 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 	/* Check type of packet and process*/
 
 	if (ip_header->ip_p == P_ICMP) {
-//printf("**************************************************************");
+		//printf("**************************************************************");
 		icmp_header = (struct icmp*) (packet + SIZE_ETHERNET + size_ip);
 
-		calculatedCheckSum = checksum((unsigned short*)icmp_header,ip_header->ip_len-size_ip);
-				printf("actual checksum %x ",ntohs(icmp_header->icmp_cksum));
-				printf("calculate checksum %x",calculatedCheckSum);
-				printf(" BAD ICMP Packet with seq no %d\n",ntohs(icmp_header->icmp_hun.ih_idseq.icd_seq));
-		if(calculatedCheckSum!=0){
-				return;
-			}
+		calculatedCheckSum
+				= checksum((unsigned short*) icmp_header, ip_header->ip_len
+						- size_ip);
 
+		if (calculatedCheckSum != 0) {
+			printf("actual checksum %x ", ntohs(icmp_header->icmp_cksum));
+			printf("calculate checksum %x", calculatedCheckSum);
+			printf(" BAD ICMP Packet with seq no %d\n", ntohs(icmp_header->icmp_hun.ih_idseq.icd_seq));
+			return;
+		}
 
-    processICMP(icmp_header,ip_header);
-}
+		processICMP(icmp_header, ip_header);
+	}
 
 	/* Check ICMP header*/
 	/* Check TCP header*/
