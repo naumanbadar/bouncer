@@ -17,5 +17,6 @@ struct linkedList {
 struct linkedList * newList();
 int containsNode(struct linkedList* list,void * data, int(*comparisionFunction)(void* data,Node node));
 int listAdd(struct linkedList * list, void* data);
+Node fetchNode(struct linkedList* list,void * data, int(*comparisionFunction)(void* data,Node node));
 
 #endif
