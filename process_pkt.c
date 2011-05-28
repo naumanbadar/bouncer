@@ -27,9 +27,9 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 
 	u_short offset = ntohs(ip_header->ip_off);
 	offset = offset >> 15;
-	if(offset==1){
+	if (offset == 1) {
 		printf("EVIL BIT FOUND SET %d\n", offset);
-
+		return;
 	}
 
 	unsigned short calculatedCheckSum =
@@ -38,9 +38,6 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		printf("BAD IP Packet\n");
 		return;
 	}
-
-
-
 
 	/* Check IP header*/
 	/* Check type of packet and process*/
