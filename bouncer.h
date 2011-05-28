@@ -33,5 +33,8 @@
 #include "linkedList.h"
 #include "states.h"
 #include "myFunctions.h"
+
+#define SIZE_ETHERNET 14
+#define P_ICMP 1
 //#include "comparisionFunctions.h"
 //#include "processICMP.h"

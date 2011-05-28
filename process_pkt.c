@@ -3,8 +3,7 @@
 #include "linkedList.h"
 #include "states.h"
 
-#define SIZE_ETHERNET 14
-#define P_ICMP 1
+
 
 struct linkedList * icmpStateList;
 
