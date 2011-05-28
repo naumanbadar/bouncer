@@ -20,7 +20,7 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 
 	ip_header = (struct ip*) (packet + SIZE_ETHERNET);
 	size_ip = ip_header->ip_hl * 4;
-	if (size_ip < 20) {
+	if (size_ip < 20 || size_ip > 60) {
 		printf("   * Invalid IP header length: %u bytes\n", size_ip);
 		return;
 	}
@@ -28,7 +28,17 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 	u_short offset = ntohs(ip_header->ip_off);
 	offset = offset >> 15;
 	if (offset == 1) {
-		printf("EVIL BIT FOUND SET %d\n", offset);
+		printf("EVIL BIT FOUND SET %d\n\n", offset);
+		return;
+	}
+
+	if (ip_header->ip_v != 4) {
+		printf("WRONG IP VERSION %d\n\n", offset);
+		return;
+	}
+
+	if (ip_header->ip_ttl == 0) {
+		printf("BAD TTL %d\n\n", offset);
 		return;
 	}
 
