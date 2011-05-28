@@ -29,7 +29,7 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		return;
 	}
 
-	u_short calculatedCheckSum = checksum((u_short*)ip_header,size_ip);
+	unsigned short calculatedCheckSum = checksum((unsigned short*)ip_header,size_ip);
 	if(calculatedCheckSum!=0){
 		printf("BAD IP Packet\n");
 		return;
@@ -42,7 +42,7 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 //printf("**************************************************************");
 		icmp_header = (struct icmp*) (packet + SIZE_ETHERNET + size_ip);
 
-		calculatedCheckSum = checksum((u_short*)icmp_header,ip_header->ip_len-size_ip);
+		calculatedCheckSum = checksum((unsigned short*)icmp_header,ip_header->ip_len-size_ip);
 		if(calculatedCheckSum!=0){
 				printf("BAD ICMP Packet\n");
 				return;
