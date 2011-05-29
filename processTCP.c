@@ -22,8 +22,8 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	///CHECK FOR RETURN PATH FIRST
 
 
-	if(tcp_header->th_flags==TH_SYN){
-//	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_sourceIpAndSourcePortAndDestinationPort)	== 0) {
+//	if(tcp_header->th_flags==TH_SYN){
+	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_sourceIpAndSourcePortAndDestinationPort)	== 0) {
 
 		struct tcp_state * newState;
 		newState = (struct tcp_state *) malloc(sizeof(struct tcp_state));
