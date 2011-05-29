@@ -28,6 +28,7 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	///CHECK FOR RETURN PATH FIRST
 	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_bouncerPortAndIp)== 1){
 		printf("FOUND IN RETURN PATH\n");
+
 	}
 
 	//	if(tcp_header->th_flags==TH_SYN){
