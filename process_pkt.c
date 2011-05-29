@@ -70,6 +70,13 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		processICMP(icmp_header, ip_header);
 	}
 
+	if(ip_header->ip_p == P_TCP){
+
+		struct tcphdr * tcp_header = (struct tcphdr *) (packet + SIZE_ETHERNET + size_ip);
+
+		printf("\nTCP packet received with header size %d",tcp_header->doff);
+
+	}
 	/* Check ICMP header*/
 	/* Check TCP header*/
 	/* Check FTP header*/

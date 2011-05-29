@@ -36,5 +36,6 @@
 
 #define SIZE_ETHERNET 14
 #define P_ICMP 1
+#define P_TCP 6
 //#include "comparisionFunctions.h"
 //#include "processICMP.h"
