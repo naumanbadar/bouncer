@@ -54,12 +54,11 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 
 	tcp_header->th_sport = state.bouncerSourcePort;
 	tcp_header->th_sum=0;
-	long calculatedTcpChkSum=tcpChkSum((struct iphdr *) ip_header, tcp_header);
-	tcp_header->th_sum=calculatedTcpChkSum;
-
 	ip_header->ip_src.s_addr = inet_addr(listenIP);
 	ip_header->ip_dst.s_addr = inet_addr(serverIP);
 
+	long calculatedTcpChkSum=tcpChkSum((struct iphdr *) ip_header, tcp_header);
+	tcp_header->th_sum=calculatedTcpChkSum;
 
 			sendIp(ip_header);
 	//
