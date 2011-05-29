@@ -60,6 +60,8 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	long calculatedTcpChkSum=tcpChkSum((struct iphdr *) ip_header, tcp_header);
 	tcp_header->th_sum=calculatedTcpChkSum;
 
+	printf("Packet to be sent on port %d\n",tcp_header->th_dport);
+
 			sendIp(ip_header);
 	//
 	//	} else if (icmp_header->icmp_type == ICMP_ECHOREPLY) {
