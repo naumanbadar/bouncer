@@ -4,6 +4,7 @@
 
 extern struct linkedList * icmpStateList;
 extern struct linkedList * tcpStateList;
+extern u_int16_t bouncerPort;
 
 struct icmp_state
 {
@@ -14,8 +15,10 @@ struct icmp_state
 struct tcp_state
 {
 	u_int16_t senderSourcePort;
+	u_int16_t senderDestinationPort;
 	u_int16_t bouncerSourcePort;
-	struct in_addr senderIp;
+	struct in_addr senderSourceIp;
+	struct in_addr senderDestinationIp;
 };
 
 

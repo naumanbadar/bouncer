@@ -12,21 +12,21 @@ int icmp_stateInList(void* data, Node node) {
 		return 0;
 }
 
-int tcp_stateInList_wrt_sourceIpAndSourcePort(void* data, Node node) {
+int tcp_stateInList_wrt_sourceIpAndSourcePortAndDestinationPort(void* data, Node node) {
 	struct tcp_state * associationInList = (struct tcp_state *) node->data;
 	struct tcp_state * associationNew = (struct tcp_state *) data;
 
-	if (associationInList->senderSourcePort == associationNew->senderSourcePort && associationInList->senderIp.s_addr==associationNew->senderIp.s_addr) {
+	if (associationInList->senderSourcePort == associationNew->senderSourcePort &&associationInList->senderDestinationPort == associationNew->senderDestinationPort&& associationInList->senderSourceIp.s_addr==associationNew->senderSourceIp.s_addr) {
 		return 1;
 	}
 	else
 		return 0;
 }
-int tcp_stateInList_wrt_bouncerPort(void* data, Node node) {
+int tcp_stateInList_wrt_bouncerPortAndIp(void* data, Node node) {
 	struct tcp_state * associationInList = (struct tcp_state *) node->data;
 	struct tcp_state * associationNew = (struct tcp_state *) data;
 
-	if (associationInList->bouncerSourcePort == associationNew->bouncerSourcePort) {
+	if (associationNew->senderDestinationPort == associationInList->bouncerSourcePort&&associationNew->senderSourceIp.s_addr==associationInList->senderDestinationIp.s_addr) {
 		return 1;
 	}
 	else
