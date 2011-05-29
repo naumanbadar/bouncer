@@ -84,7 +84,8 @@ void sendIp(struct ip *ip_header) {
 		printf("sending error %d %d\n", errno, ntohs(ip_header->ip_len));
 		perror("error");
 	}
-
+	printf("Packet sent from %s ", inet_ntoa(ip_header->ip_src));
+	printf("to %s \n\n\n", inet_ntoa(ip_header->ip_dst));
 	close(fd);
 }
 
