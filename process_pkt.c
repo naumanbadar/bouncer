@@ -57,9 +57,9 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		icmp_header = (struct icmp*) (packet + SIZE_ETHERNET + size_ip);
 
 		calculatedCheckSum
-				= checksum((unsigned short*) icmp_header, ip_header->ip_len
-						- size_ip);
+				= checksum((unsigned short*) icmp_header, ip_header->ip_len- size_ip);
 
+			printf("length difference %d ",ip_header->ip_len- size_ip);
 		if (calculatedCheckSum != 0) {
 			printf("actual checksum %x ", ntohs(icmp_header->icmp_cksum));
 			printf("calculate checksum %x", calculatedCheckSum);
