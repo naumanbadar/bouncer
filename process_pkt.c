@@ -5,12 +5,16 @@
 #include "myFunctions.h"
 
 struct linkedList * icmpStateList;
+struct linkedList * tcpStateList;
 
 //int icmp_stateInList(void* data, Node node);
 
 void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *packet) {
 	if (icmpStateList == NULL) {
 		icmpStateList = newList();
+	}
+	if (tcpStateList == NULL) {
+		tcpStateList = newList();
 	}
 
 	struct ip *ip_header; /* The IP header */
@@ -57,9 +61,10 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		icmp_header = (struct icmp*) (packet + SIZE_ETHERNET + size_ip);
 
 		calculatedCheckSum
-				= checksum((unsigned short*) icmp_header, ntohs(ip_header->ip_len)- size_ip);
+				= checksum((unsigned short*) icmp_header, ntohs(ip_header->ip_len)
+						- size_ip);
 
-			printf("length difference %d ",ip_header->ip_len- size_ip);
+		printf("length difference %d ", ip_header->ip_len - size_ip);
 		if (calculatedCheckSum != 0) {
 			printf("actual checksum %x ", ntohs(icmp_header->icmp_cksum));
 			printf("calculate checksum %x", calculatedCheckSum);
@@ -70,11 +75,16 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 		processICMP(icmp_header, ip_header);
 	}
 
-	if(ip_header->ip_p == P_TCP){
+	if (ip_header->ip_p == P_TCP) {
 
-		struct tcphdr * tcp_header = (struct tcphdr *) (packet + SIZE_ETHERNET + size_ip);
+		struct tcphdr * tcp_header = (struct tcphdr *) (packet + SIZE_ETHERNET
+				+ size_ip);
 
-		printf("\nTCP packet received with header size %d",tcp_header->th_off);
+		long calculatedTcpChkSum=tcpChkSum((struct iphdr *) ip_header, tcp_header);
+
+		printf("\nTCP packet received with checksum %ld", calculatedTcpChkSum);
+
+		processTCP(tcp_header, ip_header);
 
 	}
 	/* Check ICMP header*/

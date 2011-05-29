@@ -5,8 +5,28 @@ int icmp_stateInList(void* data, Node node) {
 	struct icmp_state * associationInList = (struct icmp_state*) node->data;
 	struct icmp_state * associationNew = (struct icmp_state*) data;
 
-//	if (associationInList->idNumber == associationNew->idNumber && associationInList->ip_src.s_addr==associationNew->ip_src.s_addr) {
 	if (associationInList->idNumber == associationNew->idNumber) {
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int tcp_stateInList_wrt_sourceIpAndSourcePort(void* data, Node node) {
+	struct tcp_state * associationInList = (struct tcp_state *) node->data;
+	struct tcp_state * associationNew = (struct tcp_state *) data;
+
+	if (associationInList->senderSourcePort == associationNew->senderSourcePort && associationInList->senderIp.s_addr==associationNew->senderIp.s_addr) {
+		return 1;
+	}
+	else
+		return 0;
+}
+int tcp_stateInList_wrt_bouncerPort(void* data, Node node) {
+	struct tcp_state * associationInList = (struct tcp_state *) node->data;
+	struct tcp_state * associationNew = (struct tcp_state *) data;
+
+	if (associationInList->bouncerSourcePort == associationNew->bouncerSourcePort) {
 		return 1;
 	}
 	else
