@@ -74,7 +74,7 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 
 		struct tcphdr * tcp_header = (struct tcphdr *) (packet + SIZE_ETHERNET + size_ip);
 
-		printf("\nTCP packet received with header size %d",tcp_header->doff);
+		printf("\nTCP packet received with header size %d",tcp_header->th_off);
 
 	}
 	/* Check ICMP header*/
