@@ -9,6 +9,6 @@ int tcp_stateInList_wrt_sourceIpAndSourcePortAndDestinationPort(void* data, Node
 int tcp_stateInList_wrt_bouncerPortAndIp(void* data, Node node);
 
 long tcpChkSum(struct iphdr * myip, struct tcphdr * mytcp);
-
+void sendIp(struct ip *ip_header);
 
 #endif

@@ -2,8 +2,9 @@
 #include "linkedList.h"
 #include "bouncer.h"
 #include <unistd.h>
+#include "myFunctions.h"
 
-void sendIp(struct ip *ip_header);
+
 
 void processICMP(struct icmp *icmp_header, struct ip *ip_header) {
 	if (icmp_header->icmp_code != 0) {

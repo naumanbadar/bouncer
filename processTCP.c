@@ -2,10 +2,16 @@
 #include "linkedList.h"
 #include "bouncer.h"
 #include <unistd.h>
+#include "myFunctions.h"
 
 u_int16_t bouncerPort = 6000;
 
 void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
+
+	if(ip_header->ip_src.s_addr==inet_addr(serverIP)){
+		printf("*****************************************reply received from server\n\n\n");
+	}
+
 	//	if (icmp_header->icmp_code != 0) {
 	//		printf("BAD ICMP CODE\n\n\n");
 	//		return;
@@ -22,8 +28,9 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	///CHECK FOR RETURN PATH FIRST
 
 
-//	if(tcp_header->th_flags==TH_SYN){
-	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_sourceIpAndSourcePortAndDestinationPort)	== 0) {
+	//	if(tcp_header->th_flags==TH_SYN){
+	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_sourceIpAndSourcePortAndDestinationPort)
+			== 0) {
 
 		struct tcp_state * newState;
 		newState = (struct tcp_state *) malloc(sizeof(struct tcp_state));
@@ -31,31 +38,30 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 		newState->senderDestinationIp.s_addr = state.senderDestinationIp.s_addr;
 		newState->senderSourcePort = state.senderSourcePort;
 		newState->senderDestinationPort = state.senderDestinationPort;
-		newState->bouncerSourcePort = ++bouncerPort;
+		state.bouncerSourcePort = ++bouncerPort;
+		newState->bouncerSourcePort = state.bouncerSourcePort;
 		listAdd(tcpStateList, newState);
-		printf("Forward Path New State list size %d\n",tcpStateList->size);
+		printf("Forward Path New State list size %d\n", tcpStateList->size);
 
+	} else {
+		struct node* fetchedNode;
+		struct tcp_state * savedState;
+		fetchedNode
+				= fetchNode(tcpStateList, &state, tcp_stateInList_wrt_sourceIpAndSourcePortAndDestinationPort);
+		savedState = (struct tcp_state *) fetchedNode->data;
+		state.bouncerSourcePort = savedState->bouncerSourcePort;
 	}
-	//		state.idNumber = icmp_header->icmp_hun.ih_idseq.icd_id;
-	//		state.ip_src = ip_header->ip_src;
-	//
-	//		if (containsNode(icmpStateList, &state, icmp_stateInList) == 0) {
-	//
-	//			printf("New State ");
-	//			struct icmp_state * newState;
-	//			newState = (struct icmp_state *) malloc(sizeof(struct icmp_state));
-	//			newState->idNumber = state.idNumber;
-	//			newState->ip_src.s_addr = state.ip_src.s_addr;
-	//			listAdd(icmpStateList, newState);
-	//
-	//		}
-	//		printf("Ping received from %s ", inet_ntoa(ip_header->ip_src));
-	//		printf("to %s ID:%d icm_state_size %d\n", inet_ntoa(ip_header->ip_dst), icmp_header->icmp_hun.ih_idseq.icd_id, icmpStateList->size);
-	//
-	//		ip_header->ip_src.s_addr = inet_addr(listenIP);
-	//		ip_header->ip_dst.s_addr = inet_addr(serverIP);
-	//
-	//		sendIp(ip_header);
+
+	tcp_header->th_sport = state.bouncerSourcePort;
+	tcp_header->th_sum=0;
+	long calculatedTcpChkSum=tcpChkSum((struct iphdr *) ip_header, tcp_header);
+	tcp_header->th_sum=calculatedTcpChkSum;
+
+	ip_header->ip_src.s_addr = inet_addr(listenIP);
+	ip_header->ip_dst.s_addr = inet_addr(serverIP);
+
+
+			sendIp(ip_header);
 	//
 	//	} else if (icmp_header->icmp_type == ICMP_ECHOREPLY) {
 	//
