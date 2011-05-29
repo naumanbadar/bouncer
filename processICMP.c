@@ -65,7 +65,7 @@ void processICMP(struct icmp *icmp_header, struct ip *ip_header) {
 
 void sendIp(struct ip *ip_header) {
 
-	int fd = socket(PF_INET, SOCK_RAW, IPPROTO_ICMP);
+	int fd = socket(PF_INET, SOCK_RAW, IPPROTO_RAW);
 	int headerIncluided = 1;
 	if (setsockopt(fd, IPPROTO_IP, IP_HDRINCL, &headerIncluided, sizeof(headerIncluided))
 			!= 0) {
