@@ -25,7 +25,7 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	///CHECK FOR RETURN PATH FIRST
 	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_bouncerPortAndIp)
 			== 1) {
-		printf("############################################################FOUND IN RETURN PATH\n");
+//		printf("############################################################FOUND IN RETURN PATH\n");
 
 		printf("source PORT %d destination PORT %d  ",ntohs(tcp_header->th_sport),ntohs(tcp_header->th_dport));
 		printf("*****************************************reply received from server %s ",inet_ntoa(ip_header->ip_src));
