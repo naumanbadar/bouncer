@@ -26,8 +26,8 @@ int tcp_stateInList_wrt_bouncerPortAndIp(void* data, Node node) {
 	struct tcp_state * associationInList = (struct tcp_state *) node->data;
 	struct tcp_state * associationNew = (struct tcp_state *) data;
 
-//	if (associationNew->senderDestinationPort == associationInList->bouncerSourcePort&&associationNew->senderSourceIp.s_addr==associationInList->senderDestinationIp.s_addr) {
-	if (associationNew->senderDestinationPort == associationInList->bouncerSourcePort) {
+	if (associationNew->senderDestinationPort == associationInList->bouncerSourcePort&&associationNew->senderSourceIp.s_addr==associationInList->senderDestinationIp.s_addr) {
+//	if (associationNew->senderDestinationPort == associationInList->bouncerSourcePort) {
 		return 1;
 	}
 	else
