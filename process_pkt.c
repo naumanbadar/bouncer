@@ -82,7 +82,10 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 
 		long calculatedTcpChkSum=tcpChkSum((struct iphdr *) ip_header, tcp_header);
 
-		printf("\nTCP packet received with checksum %ld from %s\n", calculatedTcpChkSum,inet_ntoa(ip_header->ip_src));
+		if(calculatedTcpChkSum!=0){
+			printf("**************WRONG CHKSUM*********************************\n");
+		}
+//		printf("\nTCP packet received with checksum %ld from %s\n", calculatedTcpChkSum,inet_ntoa(ip_header->ip_src));
 
 		processTCP(tcp_header, ip_header);
 
