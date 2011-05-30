@@ -30,6 +30,30 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 		printf("source PORT %d destination PORT %d  ",ntohs(tcp_header->th_sport),ntohs(tcp_header->th_dport));
 		printf("*****************************************reply received from server %s ",inet_ntoa(ip_header->ip_src));
 		printf("destined towards %s\n\n\n",inet_ntoa(ip_header->ip_dst));
+
+				struct node* fetchedNode;
+				struct tcp_state * savedState;
+				fetchedNode	= fetchNode(tcpStateList, &state, tcp_stateInList_wrt_bouncerPortAndIp);
+				savedState = (struct tcp_state *) fetchedNode->data;
+
+
+			tcp_header->th_sport = htons(listenPort);
+				tcp_header->th_dport = htons(savedState->senderSourcePort);
+			tcp_header->th_sum = 0;
+			ip_header->ip_src.s_addr = inet_addr(listenIP);
+			ip_header->ip_dst.s_addr = savedState->senderSourceIp.s_addr;
+
+			long calculatedTcpChkSum =
+					tcpChkSum((struct iphdr *) ip_header, tcp_header);
+			tcp_header->th_sum = calculatedTcpChkSum;
+
+			//	printf("Packet to be sent on port %d\n",tcp_header->th_dport);
+
+			sendIp(ip_header);
+
+
+
+
 		return;
 
 	}
