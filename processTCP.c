@@ -38,7 +38,7 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 
 
 			tcp_header->th_sport = htons(atoi(listenPort));
-				tcp_header->th_dport = htons(savedState->senderSourcePort);
+			tcp_header->th_dport = htons(savedState->senderSourcePort);
 			tcp_header->th_sum = 0;
 			ip_header->ip_src.s_addr = inet_addr(listenIP);
 			ip_header->ip_dst.s_addr = savedState->senderSourceIp.s_addr;
@@ -84,7 +84,7 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	}
 
 	tcp_header->th_sport = htons(state.bouncerSourcePort);
-	//	tcp_header->th_dport = htons(serverPort);
+	tcp_header->th_dport = htons(atoi(serverPort));
 	tcp_header->th_sum = 0;
 	ip_header->ip_src.s_addr = inet_addr(listenIP);
 	ip_header->ip_dst.s_addr = inet_addr(serverIP);
