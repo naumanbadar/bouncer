@@ -76,11 +76,16 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 
 	if (ip_header->ip_p == P_TCP) {
 
+		if((ntohs(ip_header->ip_len)-size_ip)<20){
+			printf("**************WRONG TCP LENGTH********************************* TCP PACKET DROPPED\n");
+			return;
+
+		}
+		printf("###################################################**************************************************************\n");
 		struct tcphdr * tcp_header = (struct tcphdr *) (packet + SIZE_ETHERNET
 				+ size_ip);
 
 		long calculatedTcpChkSum=tcpChkSum((struct iphdr *) ip_header, tcp_header);
-		printf("###################################################**************************************************************\n");
 
 		if(calculatedTcpChkSum!=0){
 			printf("**************WRONG CHKSUM********************************* TCP PACKET DROPPED\n");
@@ -89,11 +94,6 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 //		printf("\nTCP packet received with checksum %ld from %s\n", calculatedTcpChkSum,inet_ntoa(ip_header->ip_src));
 
 
-		if((ntohs(ip_header->ip_len)-size_ip)<20){
-			printf("**************WRONG TCP LENGTH********************************* TCP PACKET DROPPED\n");
-			return;
-
-		}
 
 		processTCP(tcp_header, ip_header);
 
