@@ -28,6 +28,8 @@ int tcp_stateInList_wrt_bouncerPortAndIp(void* data, Node node) {
 
 //	if (associationNew->senderDestinationPort == associationInList->bouncerSourcePort&&associationNew->senderSourceIp.s_addr==associationInList->senderDestinationIp.s_addr) {
 	if (associationNew->senderDestinationPort == associationInList->bouncerSourcePort) {
+		printf("FROM COMPARISION FUNCTION %s ",inet_ntoa(associationNew->senderSourceIp));
+		printf("%s\n",inet_ntoa(associationInList->senderDestinationIp));
 		return 1;
 	}
 	else
