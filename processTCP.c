@@ -23,21 +23,19 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	state.senderDestinationPort = ntohs(tcp_header->th_dport);
 
 	///CHECK FOR RETURN PATH FIRST
-	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_bouncerPortAndIp)== 1) {
+	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_bouncerPortAndIp)
+			== 1) {
 		printf("############################################################FOUND IN RETURN PATH\n");
-
-		printf("source PORT %d destination PORT %d  ",ntohs(tcp_header->th_sport),ntohs(tcp_header->th_dport));
-		printf("*****************************************reply received from server %s ",inet_ntoa(ip_header->ip_src));
-		printf("destined towards %s\n\n\n",inet_ntoa(ip_header->ip_dst));
-
-
-
-
-
-		return;
 
 	}
 
+	if (ip_header->ip_src.s_addr == inet_addr(serverIP)) {
+		printf("source PORT %d destination PORT %d  ",ntohs(tcp_header->th_sport),ntohs(tcp_header->th_dport));
+		printf("*****************************************reply received from server %s ",inet_ntoa(ip_header->ip_src));
+		printf("destined towards %s\n\n\n",inet_ntoa(ip_header->ip_dst));
+		return;
+
+	}
 
 	//	if(tcp_header->th_flags==TH_SYN){
 	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_sourceIpAndSourcePortAndDestinationPort)
@@ -71,8 +69,7 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 
 	long calculatedTcpChkSum =
 			tcpChkSum((struct iphdr *) ip_header, tcp_header);
-
-	tcp_header->th_sum = htons(calculatedTcpChkSum);
+	tcp_header->th_sum = calculatedTcpChkSum;
 
 	//	printf("Packet to be sent on port %d\n",tcp_header->th_dport);
 
