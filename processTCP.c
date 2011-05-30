@@ -12,6 +12,7 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 		printf("source PORT %d destination PORT %d  ",ntohs(tcp_header->th_sport),ntohs(tcp_header->th_dport));
 		printf("*****************************************reply received from server %s ",inet_ntoa(ip_header->ip_src));
 		printf("destined towards %s\n\n\n",inet_ntoa(ip_header->ip_dst));
+		return;
 
 	}
 
