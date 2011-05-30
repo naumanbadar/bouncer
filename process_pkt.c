@@ -76,11 +76,11 @@ void process_pkt(u_char *args, const struct pcap_pkthdr *header, const u_char *p
 
 	if (ip_header->ip_p == P_TCP) {
 
-		printf("###################################################**************************************************************\n");
 		struct tcphdr * tcp_header = (struct tcphdr *) (packet + SIZE_ETHERNET
 				+ size_ip);
 
 		long calculatedTcpChkSum=tcpChkSum((struct iphdr *) ip_header, tcp_header);
+		printf("###################################################**************************************************************\n");
 
 		if(calculatedTcpChkSum!=0){
 			printf("**************WRONG CHKSUM********************************* TCP PACKET DROPPED\n");
