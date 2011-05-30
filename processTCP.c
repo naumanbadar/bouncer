@@ -22,6 +22,12 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	state.senderSourcePort = ntohs(tcp_header->th_sport);
 	state.senderDestinationPort = ntohs(tcp_header->th_dport);
 
+	if(ip_header->ip_src.s_addr!=inet_addr(serverIP)&&ntohs(tcp_header->th_dport)!=atoi(listenPort)){
+		return;
+	}
+
+
+
 	///CHECK FOR RETURN PATH FIRST
 	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_bouncerPortAndIp)
 			== 1) {
