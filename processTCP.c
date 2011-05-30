@@ -37,7 +37,7 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 				savedState = (struct tcp_state *) fetchedNode->data;
 
 
-			tcp_header->th_sport = htons(listenPort);
+			tcp_header->th_sport = htons(atoi(listenPort));
 				tcp_header->th_dport = htons(savedState->senderSourcePort);
 			tcp_header->th_sum = 0;
 			ip_header->ip_src.s_addr = inet_addr(listenIP);
