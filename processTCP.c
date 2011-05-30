@@ -9,7 +9,9 @@ u_int16_t bouncerPort = 6000;
 void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 
 	if (ip_header->ip_src.s_addr == inet_addr(serverIP)) {
-		printf("*****************************************reply received from server\n\n\n");
+		printf("PORT %d",ntohs(tcp_header->th_sport));
+		printf("*****************************************reply received from server %s\n\n\n",inet_ntoa(ip_header->ip_src));
+
 	}
 
 	//	if (icmp_header->icmp_code != 0) {
