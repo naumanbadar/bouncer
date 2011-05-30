@@ -8,7 +8,7 @@ u_int16_t bouncerPort = 6000;
 
 void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 
-	if(ip_header->ip_src.s_addr==inet_addr(serverIP)){
+	if (ip_header->ip_src.s_addr == inet_addr(serverIP)) {
 		printf("*****************************************reply received from server\n\n\n");
 	}
 
@@ -22,11 +22,12 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	struct tcp_state state;
 	state.senderSourceIp.s_addr = ip_header->ip_src.s_addr;
 	state.senderDestinationIp.s_addr = ip_header->ip_dst.s_addr;
-	state.senderSourcePort = tcp_header->th_sport;
-	state.senderDestinationPort = tcp_header->th_dport;
+	state.senderSourcePort = ntohs(tcp_header->th_sport);
+	state.senderDestinationPort = ntohs(tcp_header->th_dport);
 
 	///CHECK FOR RETURN PATH FIRST
-	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_bouncerPortAndIp)== 1){
+	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_bouncerPortAndIp)
+			== 1) {
 		printf("FOUND IN RETURN PATH\n");
 
 	}
@@ -56,17 +57,18 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 	}
 
 	tcp_header->th_sport = htons(state.bouncerSourcePort);
-//	tcp_header->th_dport = htons(serverPort);
-	tcp_header->th_sum=0;
+	//	tcp_header->th_dport = htons(serverPort);
+	tcp_header->th_sum = 0;
 	ip_header->ip_src.s_addr = inet_addr(listenIP);
 	ip_header->ip_dst.s_addr = inet_addr(serverIP);
 
-	long calculatedTcpChkSum=tcpChkSum((struct iphdr *) ip_header, tcp_header);
-	tcp_header->th_sum=calculatedTcpChkSum;
+	long calculatedTcpChkSum =
+			tcpChkSum((struct iphdr *) ip_header, tcp_header);
+	tcp_header->th_sum = calculatedTcpChkSum;
 
-//	printf("Packet to be sent on port %d\n",tcp_header->th_dport);
+	//	printf("Packet to be sent on port %d\n",tcp_header->th_dport);
 
-			sendIp(ip_header);
+	sendIp(ip_header);
 	//
 	//	} else if (icmp_header->icmp_type == ICMP_ECHOREPLY) {
 	//
