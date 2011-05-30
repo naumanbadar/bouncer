@@ -27,8 +27,6 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 			== 1) {
 		printf("############################################################FOUND IN RETURN PATH\n");
 
-	}
-
 	if (ip_header->ip_src.s_addr == inet_addr(serverIP)) {
 		printf("source PORT %d destination PORT %d  ",ntohs(tcp_header->th_sport),ntohs(tcp_header->th_dport));
 		printf("*****************************************reply received from server %s ",inet_ntoa(ip_header->ip_src));
@@ -36,6 +34,8 @@ void processTCP(struct tcphdr *tcp_header, struct ip *ip_header) {
 		return;
 
 	}
+	}
+
 
 	//	if(tcp_header->th_flags==TH_SYN){
 	if (containsNode(tcpStateList, &state, tcp_stateInList_wrt_sourceIpAndSourcePortAndDestinationPort)
