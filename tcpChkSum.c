@@ -36,3 +36,49 @@ long tcpChkSum(struct iphdr * myip, struct tcphdr * mytcp) {
         return checksum(tcp,totaltcp_len);
 
 }
+
+u_short tcp_sum_calc(u_short len_tcp, u_char src_addr[], u_char dest_addr[], int padding, u_char buff[])
+{
+    u_short prot_tcp=6;
+    u_short padd=0;
+    u_short word16;
+    u_long sum;
+
+            // Find out if the length of data is even or odd number. If odd,
+            // add a padding byte = 0 at the end of packet
+            if ((padding&1)==1){
+                    padd=1;
+                    buff[len_tcp]=0;
+            }
+
+            //initialize sum to zero
+            sum=0;
+            int i;
+            // make 16 bit words out of every two adjacent 8 bit words and
+            // calculate the sum of all 16 vit words
+            for (i=0;i<len_tcp+padd;i=i+2){
+                    word16 =((buff[i]<<8)&0xFF00)+(buff[i+1]&0xFF);
+                    sum = sum + (unsigned long)word16;
+            }
+            // add the TCP pseudo header which contains:
+            // the IP source and destinationn addresses,
+            for (i=0;i<4;i=i+2){
+                    word16 =((src_addr[i]<<8)&0xFF00)+(src_addr[i+1]&0xFF);
+                    sum=sum+word16;
+            }
+            for (i=0;i<4;i=i+2){
+                    word16 =((dest_addr[i]<<8)&0xFF00)+(dest_addr[i+1]&0xFF);
+                    sum=sum+word16;
+            }
+            // the protocol number and the length of the TCP packet
+            sum = sum + prot_tcp + len_tcp;
+
+            // keep only the last 16 bits of the 32 bit calculated sum and add the carries
+            while (sum>>16)
+                    sum = (sum & 0xFFFF)+(sum >> 16);
+
+            // Take the one's complement of sum
+            sum = ~sum;
+
+    return ((unsigned short) sum);
+}

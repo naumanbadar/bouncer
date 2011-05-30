@@ -11,4 +11,7 @@ int tcp_stateInList_wrt_bouncerPortAndIp(void* data, Node node);
 long tcpChkSum(struct iphdr * myip, struct tcphdr * mytcp);
 void sendIp(struct ip *ip_header);
 
+
+u_short tcp_sum_calc(u_short len_tcp, u_char src_addr[], u_char dest_addr[], int padding, u_char buff[]);
+
 #endif
